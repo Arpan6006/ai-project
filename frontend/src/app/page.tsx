@@ -4,6 +4,7 @@ import styles from '../styles/Dashboard.module.css';
 import TradingChart from '../components/TradingChart';
 import PredictionPanel from '../components/PredictionPanel';
 import { Search, Bell, User, Settings, AlertCircle } from 'lucide-react';
+import Link from 'next/link';
 
 const SYMBOL_NAMES: Record<string, string> = {
   'RELIANCE': 'Reliance Industries',
@@ -21,13 +22,8 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeIndicators, setActiveIndicators] = useState<Set<string>>(new Set(['EMA 12']));
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   const timeframes = ['1m', '5m', '15m', '30m', '1h', '1d'];
-
-  const toggleDropdown = (name: string) => {
-    setActiveDropdown(prev => prev === name ? null : name);
-  };
 
   const toggleIndicator = (name: string) => {
     const newSet = new Set(activeIndicators);
@@ -96,7 +92,7 @@ export default function DashboardPage() {
   const hasPriceData = data && data.current_price !== undefined;
 
   return (
-    <div className={styles.dashboard} onClick={() => setActiveDropdown(null)}>
+    <div className={styles.dashboard}>
       <header className={styles.header}>
         <div style={{ fontWeight: 'bold', fontSize: '18px', color: '#fff', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span style={{ color: '#2962ff' }}>StockPredict AI</span> <span style={{ fontSize: '10px', background: '#2B3139', padding: '2px 4px', borderRadius: '2px' }}>NSE</span>
@@ -117,54 +113,22 @@ export default function DashboardPage() {
 
         <div style={{ marginLeft: 'auto', display: 'flex', gap: '10px', color: '#848E9C' }}>
           
-          <div className={styles.headerIconContainer} onClick={() => toggleDropdown('search')}>
+          <div className={styles.headerIconContainer}>
             <Search size={20} />
-            {activeDropdown === 'search' && (
-              <div className={styles.dropdownMenu} onClick={e => e.stopPropagation()}>
-                <div className={styles.dropdownHeader}>Search</div>
-                <div className={styles.dropdownItem}>
-                  <input type="text" placeholder="Search symbol..." style={{width: '100%', background: 'transparent', border: '1px solid #2B3139', color: '#fff', padding: '8px', borderRadius: '4px', outline: 'none'}} />
-                </div>
-              </div>
-            )}
           </div>
 
-          <div className={styles.headerIconContainer} onClick={() => toggleDropdown('notifications')}>
+          <Link href="/notifications" className={styles.headerIconContainer} style={{ color: 'inherit' }}>
             <Bell size={20} />
             <div style={{position: 'absolute', top: '8px', right: '8px', width: '6px', height: '6px', background: '#f6465d', borderRadius: '50%'}}></div>
-            {activeDropdown === 'notifications' && (
-              <div className={styles.dropdownMenu} onClick={e => e.stopPropagation()}>
-                <div className={styles.dropdownHeader}>Notifications</div>
-                <div className={styles.dropdownItem} style={{ borderLeft: '3px solid #2dbd85' }}>✅ ML Engine connected</div>
-                <div className={styles.dropdownItem} style={{ borderLeft: '3px solid #f6465d' }}>⚠️ High volatility detected</div>
-                <div className={styles.dropdownItem} style={{ borderLeft: '3px solid #2962ff' }}>📈 RELIANCE up +1.2%</div>
-              </div>
-            )}
-          </div>
+          </Link>
 
-          <div className={styles.headerIconContainer} onClick={() => toggleDropdown('settings')}>
+          <Link href="/settings" className={styles.headerIconContainer} style={{ color: 'inherit' }}>
             <Settings size={20} />
-            {activeDropdown === 'settings' && (
-              <div className={styles.dropdownMenu} onClick={e => e.stopPropagation()}>
-                <div className={styles.dropdownHeader}>Settings</div>
-                <div className={styles.dropdownItem}>Model Preferences</div>
-                <div className={styles.dropdownItem}>API Keys</div>
-                <div className={styles.dropdownItem}>Appearance (Dark)</div>
-              </div>
-            )}
-          </div>
+          </Link>
 
-          <div className={styles.headerIconContainer} onClick={() => toggleDropdown('account')}>
+          <Link href="/account" className={styles.headerIconContainer} style={{ color: 'inherit' }}>
             <User size={20} />
-            {activeDropdown === 'account' && (
-              <div className={styles.dropdownMenu} style={{ right: 0, width: '200px' }} onClick={e => e.stopPropagation()}>
-                <div className={styles.dropdownHeader}>StockPredict User</div>
-                <div className={styles.dropdownItem}>Profile</div>
-                <div className={styles.dropdownItem}>Subscription: PRO</div>
-                <div className={styles.dropdownItem} style={{ color: '#f6465d' }}>Logout</div>
-              </div>
-            )}
-          </div>
+          </Link>
 
         </div>
       </header>
