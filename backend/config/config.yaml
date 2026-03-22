@@ -1,0 +1,44 @@
+project_name: "Institutional Stock Prediction (ISP)"
+version: "1.0.0"
+
+symbols:
+  - "RELIANCE"
+  - "TCS"
+  - "INFY"
+  - "HDFCBANK"
+  - "ICICIBANK"
+
+timeframes:
+  - "1m"
+  - "5m"
+  - "15m"
+  - "1h"
+  - "1d"
+
+data:
+  historical_years: 5
+  cache_ttl: 3600
+  redis_host: "localhost"
+  redis_port: 6379
+
+features:
+  technicals:
+    ema_windows: [9, 21, 50, 200]
+    rsi_period: 14
+    macd: [12, 26, 9]
+    bollinger: [20, 2]
+  regime:
+    volatility_window: 20
+    trend_window: 50
+
+models:
+  ensemble_weights:
+    lstm: 0.3
+    transformer: 0.3
+    xgboost: 0.2
+    lightgbm: 0.2
+  probability_threshold: 0.65
+
+api:
+  host: "0.0.0.0"
+  port: 8000
