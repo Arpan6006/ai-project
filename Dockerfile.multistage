@@ -1,0 +1,19 @@
+FROM python:3.9-slim as backend
+WORKDIR /app
+RUN apt-get update && apt-get install -y build-essential libpq-dev gcc && rm -rf /var/lib/apt/lists/*
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY backend/ ./backend/
+COPY model_engine/ ./model_engine/
+COPY data_utils/ ./data_utils/
+EXPOSE 8000
+CMD ["uvicorn", "backend.api.api:app", "--host", "0.0.0.0", "--port", "8000"]
+
+FROM node:18-alpine as frontend
+WORKDIR /app
+COPY frontend/package*.json ./
+RUN npm install
+COPY frontend/ .
+RUN npm run build
+EXPOSE 3000
+CMD ["npm", "start"]

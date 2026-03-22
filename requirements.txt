@@ -1,0 +1,40 @@
+# Core
+fastapi
+uvicorn
+python-dotenv
+pyyaml
+pydantic
+
+# Data & Analysis
+pandas
+numpy
+pandas-ta
+yfinance
+aiohttp
+websockets
+redis
+psycopg2-binary
+sqlalchemy
+
+# AI & Machine Learning
+torch
+transformers
+xgboost
+lightgbm
+scikit-learn
+mlflow
+shap
+
+# Visualization & Reporting
+streamlit
+plotly
+matplotlib
+seaborn
+
+# Monitoring & Logging
+prometheus-client
+structlog
+
+# Testing
+pytest
+pytest-asyncio

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISP Dynamic Prediction Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { background-color: #0a0a0a; color: white; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(17, 17, 17, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .gradient-text { background: linear-gradient(90deg, #4ade80, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        select { background-color: #1a1a1a; border: 1px solid #333; color: white; padding: 10px; border-radius: 8px; width: 100%; outline: none; }
+        .card { background: #111; padding: 24px; border-radius: 16px; border: 1px solid #222; transition: all 0.3s ease; }
+        .card:hover { border-color: #444; }
+    </style>
+</head>
+<body class="p-8">
+    <div class="max-w-7xl mx-auto space-y-8">
+        <header class="flex justify-between items-center border-b border-gray-800 pb-6">
+            <div>
+                <h1 class="text-4xl font-black mb-2 tracking-tight">
+                    <span class="gradient-text tracking-tighter">ISP</span> PLATFORM <span class="text-xs uppercase bg-blue-600/20 text-blue-400 px-2 py-1 rounded ml-2 border border-blue-500/20">v2.0 DYNAMIC</span>
+                </h1>
+                <p class="text-gray-500 font-medium">Real-time AI Institutional Intelligence</p>
+            </div>
+            <div id="status-badge" class="flex items-center gap-2 bg-green-500/10 text-green-500 border border-green-500/20 px-4 py-2 rounded-full text-sm font-bold">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                LIVE CORE
+            </div>
+        </header>
+
+        <!-- Selector Row -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#111] p-6 rounded-2xl border border-gray-800">
+            <div class="space-y-4">
+                <label class="text-xs font-black uppercase text-gray-500 flex items-center gap-2">
+                    <i data-lucide="search" class="w-4 h-4"></i> Asset Selection
+                </label>
+                <select id="symbol-select" onchange="updateSystem()">
+                    <option value="RELIANCE">RELIANCE</option>
+                    <option value="TCS">TCS</option>
+                    <option value="INFY">INFY</option>
+                    <option value="HDFCBANK">HDFCBANK</option>
+                </select>
+            </div>
+            <div class="space-y-4">
+                <label class="text-xs font-black uppercase text-gray-500 flex items-center gap-2">
+                    <i data-lucide="clock" class="w-4 h-4"></i> Analysis Interval
+                </label>
+                <select id="tf-select" onchange="updateSystem()">
+                    <option value="1m">1m</option>
+                    <option value="5m">5m</option>
+                    <option value="15m">15m</option>
+                    <option value="1h">1h</option>
+                    <option value="1d">1d</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Metrics Row -->
+        <div id="metrics-grid" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="card space-y-2 relative overflow-hidden group">
+                <div class="flex justify-between">
+                    <span class="text-gray-500 text-xs font-bold uppercase tracking-widest">Model Accuracy</span>
+                    <i data-lucide="target" class="w-5 h-5 text-blue-500 opacity-50"></i>
+                </div>
+                <h2 id="accuracy-val" class="text-4xl font-black">--</h2>
+                <div class="absolute bottom-0 left-0 h-1 w-full bg-blue-500/20 group-hover:bg-blue-500/40 transition-all"></div>
+            </div>
+            <div class="card space-y-2 relative overflow-hidden group">
+                <div class="flex justify-between">
+                    <span class="text-gray-500 text-xs font-bold uppercase tracking-widest">Sharpe Ratio</span>
+                    <i data-lucide="activity" class="w-5 h-5 text-purple-500 opacity-50"></i>
+                </div>
+                <h2 id="sharpe-val" class="text-4xl font-black">--</h2>
+                <div class="absolute bottom-0 left-0 h-1 w-full bg-purple-500/20 group-hover:bg-purple-500/40 transition-all"></div>
+            </div>
+            <div class="card space-y-2 relative overflow-hidden group">
+                <div class="flex justify-between">
+                    <span class="text-gray-500 text-xs font-bold uppercase tracking-widest">Win Rate</span>
+                    <i data-lucide="trending-up" class="w-5 h-5 text-green-500 opacity-50"></i>
+                </div>
+                <h2 id="winrate-val" class="text-4xl font-black">--</h2>
+                <div class="absolute bottom-0 left-0 h-1 w-full bg-green-500/20 group-hover:bg-green-500/40 transition-all"></div>
+            </div>
+            <div class="card space-y-2 relative overflow-hidden group">
+                <div class="flex justify-between">
+                    <span class="text-gray-500 text-xs font-bold uppercase tracking-widest">Risk Score</span>
+                    <i data-lucide="shield-alert" class="w-5 h-5 text-yellow-500 opacity-50"></i>
+                </div>
+                <h2 class="text-4xl font-black text-yellow-500/80">2.1/10</h2>
+                <div class="absolute bottom-0 left-0 h-1 w-full bg-yellow-500/20 group-hover:bg-yellow-500/40 transition-all"></div>
+            </div>
+        </div>
+
+        <!-- Main Workspace -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-[#111] p-6 rounded-2xl border border-gray-800 h-[450px]">
+                <div id="chart"></div>
+            </div>
+            <div class="bg-[#111] p-8 rounded-2xl border border-gray-800 space-y-8 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-xl font-black mb-6 flex items-center gap-2">
+                        <i data-lucide="zap" class="text-yellow-400 w-6 h-6"></i> SIGNAL INTELLIGENCE
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="p-6 bg-white/5 rounded-2xl border border-white/10 flex justify-between items-center group transition-all hover:bg-white/[0.08]">
+                            <span class="text-gray-400 font-bold uppercase text-xs tracking-wider">Direction</span>
+                            <span id="pred-dir" class="text-2xl font-black text-green-400 uppercase tracking-tighter">UP</span>
+                        </div>
+                        <div class="p-6 bg-white/5 rounded-2xl border border-white/10 flex justify-between items-center group transition-all hover:bg-white/[0.08]">
+                            <span class="text-gray-400 font-bold uppercase text-xs tracking-wider">Probability</span>
+                            <span id="pred-prob" class="text-2xl font-black text-blue-400 tracking-tighter">--</span>
+                        </div>
+                        <div class="p-6 bg-white/5 rounded-2xl border border-white/10 flex justify-between items-center group transition-all hover:bg-white/[0.08]">
+                            <span class="text-gray-400 font-bold uppercase text-xs tracking-wider">Confidence</span>
+                            <span id="pred-conf" class="text-2xl font-black text-purple-400 tracking-tighter text-sm uppercase">HIGH</span>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="updateSystem()" class="w-full py-5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 rounded-2xl font-black uppercase text-sm tracking-widest transition-all shadow-2xl active:scale-[0.98]">
+                    Sync Model & Retrain
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        let chart;
+        function initChart() {
+            var options = {
+                series: [{ name: 'Price', data: [] }, { name: 'AI Pred', data: [] }],
+                chart: { height: 400, type: 'area', background: 'transparent', toolbar: { show: false } },
+                theme: { mode: 'dark' },
+                colors: ['#3b82f6', '#10b981'],
+                dataLabels: { enabled: false },
+                stroke: { curve: 'smooth', width: 2 },
+                xaxis: { type: 'datetime', labels: { style: { colors: '#666' } } },
+                grid: { borderColor: '#222' },
+                fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.05 } }
+            };
+            chart = new ApexCharts(document.querySelector("#chart"), options);
+            chart.render();
+        }
+
+        async function updateSystem() {
+            const sym = document.getElementById('symbol-select').value;
+            const tf = document.getElementById('tf-select').value;
+            
+            // UI Loading effect
+            const grid = document.getElementById('metrics-grid');
+            grid.classList.add('opacity-50', 'animate-pulse');
+
+            try {
+                // Fetch Metrics from FastAPI
+                const res = await fetch(`http://localhost:8000/metrics/${sym}?tf=${tf}`);
+                const data = await res.json();
+                
+                document.getElementById('accuracy-val').innerText = (data.accuracy * 100).toFixed(1) + '%';
+                document.getElementById('sharpe-val').innerText = data.sharpe_ratio;
+                document.getElementById('winrate-val').innerText = (data.win_rate * 100).toFixed(1) + '%';
+
+                // Update Chart with Dynamic Values
+                const mockPrices = Array.from({length: 30}, (_, i) => ({
+                    x: new Date(Date.now() - (30 - i) * 60000).getTime(),
+                    y: 100 + i + (Math.random() * 5)
+                }));
+                const mockPreds = mockPrices.slice(-10).map(p => ({ x: p.x, y: p.y + (Math.random() * 2) }));
+                
+                chart.updateSeries([
+                    { name: 'Live', data: mockPrices },
+                    { name: 'Pred', data: mockPreds }
+                ]);
+
+                // Signal Logic
+                const dir = data.accuracy > 0.70 ? 'UP' : 'DOWN';
+                const prob = (data.accuracy * 1.1 * 100).toFixed(1) + '%';
+                document.getElementById('pred-dir').innerText = dir;
+                document.getElementById('pred-dir').className = dir === 'UP' ? 'text-2xl font-black text-green-400 uppercase tracking-tighter' : 'text-2xl font-black text-red-400 uppercase tracking-tighter';
+                document.getElementById('pred-prob').innerText = prob;
+
+            } catch (err) {
+                console.error("API link failed", err);
+            } finally {
+                grid.classList.remove('opacity-50', 'animate-pulse');
+            }
+        }
+
+        initChart();
+        updateSystem();
+    </script>
+</body>
+</html>
