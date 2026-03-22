@@ -31,7 +31,7 @@ const PredictionPanel: React.FC<PredictionPanelProps> = ({ prediction, signals, 
           {isUp ? '↑' : isDown ? '↓' : ''} {prediction.direction}
         </div>
         <div className={styles.confidenceValue}>
-          Confidence <span style={{ color: '#fff' }}>{prediction.confidence}%</span>
+          Confidence <span style={{ color: 'var(--text-primary)' }}>{prediction.confidence}%</span>
         </div>
       </div>
 

@@ -86,7 +86,7 @@ export default function DashboardPage() {
   const volumeData = ohlc.map((d: any) => ({
     time: d.time,
     value: d.volume,
-    color: d.close >= d.open ? '#2dbd85' : '#f6465d'
+    color: d.close >= d.open ? 'var(--accent-green)' : 'var(--accent-red)'
   }));
 
   const hasPriceData = data && data.current_price !== undefined;
@@ -94,14 +94,14 @@ export default function DashboardPage() {
   return (
     <div className={styles.dashboard}>
       <header className={styles.header}>
-        <div style={{ fontWeight: 'bold', fontSize: '18px', color: '#fff', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ color: '#2962ff' }}>StockPredict AI</span> <span style={{ fontSize: '10px', background: '#2B3139', padding: '2px 4px', borderRadius: '2px' }}>NSE</span>
+        <div style={{ fontWeight: 'bold', fontSize: '18px', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ color: 'var(--brand)' }}>StockPredict AI</span> <span style={{ fontSize: '10px', background: 'var(--border)', padding: '2px 4px', borderRadius: '2px' }}>NSE</span>
         </div>
 
 
         {hasPriceData && (
           <div style={{ marginLeft: '40px' }}>
-            <div style={{ fontSize: '12px', color: '#848E9C' }}>{data?.symbol} <span style={{ fontSize: '10px' }}>{SYMBOL_NAMES[data?.symbol] || 'Equity'}</span></div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{data?.symbol} <span style={{ fontSize: '10px' }}>{SYMBOL_NAMES[data?.symbol] || 'Equity'}</span></div>
             <div className={styles.priceDisplay}>
               ₹{data?.current_price?.toLocaleString()}
               <span className={(data?.price_change ?? 0) >= 0 ? styles.changePositive : styles.changeNegative} style={{ fontSize: '14px', marginLeft: '10px' }}>
@@ -111,7 +111,7 @@ export default function DashboardPage() {
           </div>
         )}
 
-        <div style={{ marginLeft: 'auto', display: 'flex', gap: '10px', color: '#848E9C' }}>
+        <div style={{ marginLeft: 'auto', display: 'flex', gap: '10px', color: 'var(--text-secondary)' }}>
           
           <div className={styles.headerIconContainer}>
             <Search size={20} />
@@ -119,7 +119,7 @@ export default function DashboardPage() {
 
           <Link href="/notifications" className={styles.headerIconContainer} style={{ color: 'inherit' }}>
             <Bell size={20} />
-            <div style={{position: 'absolute', top: '8px', right: '8px', width: '6px', height: '6px', background: '#f6465d', borderRadius: '50%'}}></div>
+            <div style={{position: 'absolute', top: '8px', right: '8px', width: '6px', height: '6px', background: 'var(--accent-red)', borderRadius: '50%'}}></div>
           </Link>
 
           <Link href="/settings" className={styles.headerIconContainer} style={{ color: 'inherit' }}>
@@ -139,7 +139,7 @@ export default function DashboardPage() {
           <button
             key={s}
             className={styles.btn}
-            style={{ textAlign: 'left', borderColor: symbol === s ? '#2962ff' : 'transparent', background: symbol === s ? '#1e2329' : 'transparent' }}
+            style={{ textAlign: 'left', borderColor: symbol === s ? 'var(--brand)' : 'transparent', background: symbol === s ? 'var(--bg-hover)' : 'transparent' }}
             onClick={() => setSymbol(s)}
           >
             {s}
@@ -179,7 +179,7 @@ export default function DashboardPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '15px' }}>
           <div className={styles.chartContainer} style={{ height: 'auto' }}>
             <div className={styles.signalTitle}>Model Accuracy</div>
-            <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#2dbd85' }}>{((data?.metrics?.accuracy ?? 0) * 100).toFixed(1)}%</div>
+            <div style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--accent-green)' }}>{((data?.metrics?.accuracy ?? 0) * 100).toFixed(1)}%</div>
           </div>
           <div className={styles.chartContainer} style={{ height: 'auto' }}>
             <div className={styles.signalTitle}>Win Rate</div>
@@ -191,7 +191,7 @@ export default function DashboardPage() {
           </div>
           <div className={styles.chartContainer} style={{ height: 'auto' }}>
             <div className={styles.signalTitle}>Max Drawdown</div>
-            <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#f6465d' }}>{((data?.metrics?.max_drawdown ?? 0) * 100).toFixed(1)}%</div>
+            <div style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--accent-red)' }}>{((data?.metrics?.max_drawdown ?? 0) * 100).toFixed(1)}%</div>
           </div>
         </div>
       </main>

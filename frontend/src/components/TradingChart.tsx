@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
 import { createChart, ColorType, ISeriesApi, CandlestickData, WhitespaceData } from 'lightweight-charts';
+import { useTheme } from '../app/theme-provider';
 
 interface TradingChartProps {
   data: any[];
@@ -14,34 +15,37 @@ const TradingChart: React.FC<TradingChartProps> = ({ data, volumeData, activeInd
   const seriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null);
   const volumeSeriesRef = useRef<ISeriesApi<'Histogram'> | null>(null);
   const indicatorSeriesRef = useRef<Map<string, ISeriesApi<'Line'>>>(new Map());
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (!chartContainerRef.current) return;
+    
+    const isLight = theme === 'light';
 
     const chart = createChart(chartContainerRef.current, {
       layout: {
-        background: { type: ColorType.Solid, color: '#161A1E' },
-        textColor: '#848E9C',
+        background: { type: ColorType.Solid, color: isLight ? '#ffffff' : '#161A1E' },
+        textColor: isLight ? '#57606a' : '#848E9C',
       },
       grid: {
-        vertLines: { color: '#2B3139' },
-        horzLines: { color: '#2B3139' },
+        vertLines: { color: isLight ? '#d0d7de' : '#2B3139' },
+        horzLines: { color: isLight ? '#d0d7de' : '#2B3139' },
       },
       width: chartContainerRef.current.clientWidth,
       height: chartContainerRef.current.clientHeight,
       timeScale: {
-        borderColor: '#2B3139',
+        borderColor: isLight ? '#d0d7de' : '#2B3139',
         timeVisible: true,
         secondsVisible: false,
       },
     });
 
     const series = chart.addCandlestickSeries({
-      upColor: '#2dbd85',
-      downColor: '#f6465d',
+      upColor: isLight ? '#1a7f37' : '#2dbd85',
+      downColor: isLight ? '#cf222e' : '#f6465d',
       borderVisible: false,
-      wickUpColor: '#2dbd85',
-      wickDownColor: '#f6465d',
+      wickUpColor: isLight ? '#1a7f37' : '#2dbd85',
+      wickDownColor: isLight ? '#cf222e' : '#f6465d',
     });
 
     const volumeSeries = chart.addHistogramSeries({
