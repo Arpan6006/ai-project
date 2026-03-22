@@ -1,0 +1,167 @@
+.dashboard {
+  display: grid;
+  grid-template-areas: 
+    "header header"
+    "sidebar main"
+    "sidebar footer";
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: auto 1fr auto;
+  height: 100vh;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow: hidden;
+}
+
+.header {
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 20px;
+  background-color: var(--bg-panel);
+  border-bottom: 2px solid var(--border);
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background-color: var(--bg-panel);
+  border-right: 2px solid var(--border);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.main {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  gap: 15px;
+  overflow-y: auto;
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.chartContainer {
+  background-color: var(--bg-panel);
+  border-radius: 8px;
+  padding: 15px;
+  border: 1px solid var(--border);
+  height: 65vh;
+  position: relative;
+}
+
+.controlBar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: var(--bg-hover);
+  border-radius: 6px;
+}
+
+.btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  background-color: var(--bg-panel);
+  color: var(--text-primary);
+}
+
+.btnActive {
+  background-color: var(--accent-green);
+  border-color: var(--accent-green);
+  color: white;
+}
+
+.predictionPanel {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 300px;
+  background-color: rgba(22, 26, 30, 0.95);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 15px;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.signalTitle {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.priceDisplay {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.changePositive { color: var(--accent-green); }
+.changeNegative { color: var(--accent-red); }
+
+.signalReadout {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.signalDirection {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.confidenceValue {
+  font-size: 20px;
+  color: var(--text-secondary);
+}
+
+.confidenceBar {
+  height: 4px;
+  background-color: var(--border);
+  border-radius: 2px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.confidenceFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-red), var(--accent-yellow), var(--accent-green));
+}
+
+.analysisList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.analysisItem {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.analysisName { color: var(--text-primary); }
+.analysisValue { color: var(--text-secondary); }
+
+.statusBullish { color: var(--accent-green); }
+.statusBearish { color: var(--accent-red); }
